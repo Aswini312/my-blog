@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
-
+import textstat
 
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -14,4 +14,14 @@ class Post(models.Model):
     def publish(self):
         self.published_date = timezone.now()
         self.save()
+
+    def calculate_read_time(self):
+        words_per_minute = 20 # Adjust this according to your reading speed
+        content = self.text
+        num_words = textstat.lexicon_count(content)
+        read_time_minutes = num_words / words_per_minute
+        return round(read_time_minutes)    
+
+def __str__(self):
+        return self.title    
 
